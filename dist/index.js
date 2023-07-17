@@ -10,7 +10,8 @@ app.get("/", function (req, res) {
     res.send("HELLO FROM EXPRESS + TS!!!!");
 });
 app.get("/hi", function (req, res) {
-    res.send("BYEEE!!");
+    console.log('hey there');
+    res.send("Hey!!");
 });
 app.listen(port, function () {
     console.log("now listening on port ".concat(port));
