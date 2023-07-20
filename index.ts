@@ -1,4 +1,8 @@
 import express, { Express, Request, Response } from "express";
+import {FIREBASE_APP, FIREBASE_DB} from "./db/firebaseConfig";
+import { doc, getDoc } from 'firebase/firestore'
+
+
 const helmet = require("helmet");
 const compression = require("compression");
 const config = require("config");
@@ -10,15 +14,20 @@ app.use(express.json());
 app.use(helmet());
 app.use(compression());
 
+
 app.get("/", (req: Request, res: Response) => {
   res.send("HELLO FROM EXPRESS + TS!!!!");
 });
 
-app.get("/hi", (req: Request, res: Response) => {
-  console.log('hey there')
+const getHabitById = async (req: Request, res: Response) => {
+    const response = await getDoc(
+        doc(FIREBASE_DB, 'habits', 'habit-Rg0mbzuxdFVhnzK_')
+    )
 
-  res.send("Hey!!");
-});
+    res.send(response.data());
+}
+
+app.get("/hi", getHabitById);
 
 app.listen(port, () => {
   console.log(`now listening on port ${port}`);
