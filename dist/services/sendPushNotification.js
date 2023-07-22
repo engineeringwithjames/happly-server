@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendPushNotification = void 0;
 const config_1 = require("../config");
-const node_fetch_1 = __importDefault(require("node-fetch"));
+const axios_1 = __importDefault(require("axios"));
 const sendPushNotification = (userId, habitId) => __awaiter(void 0, void 0, void 0, function* () {
     const userQuerySnapshot = yield config_1.db
         .collection('users')
@@ -39,7 +39,7 @@ const sendPushNotification = (userId, habitId) => __awaiter(void 0, void 0, void
                             data: { habitId },
                         };
                         try {
-                            yield (0, node_fetch_1.default)('https://exp.host/--/api/v2/push/send', {
+                            yield axios_1.default.post('https://api.expo.dev/v2/push/sendr', {
                                 method: 'POST',
                                 headers: {
                                     Accept: 'application/json',

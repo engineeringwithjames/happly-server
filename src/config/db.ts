@@ -7,4 +7,3 @@ admin.initializeApp({
 });
 
 export const db = admin.firestore();
-export const messaging = admin.messaging(); // Initialize Firebase Cloud Messaging

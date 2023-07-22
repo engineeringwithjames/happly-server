@@ -7,22 +7,12 @@
     <list default="true" id="c21ef858-d1c3-4501-b1bc-ce8e47772a76" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/config/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/config/db.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/scheduledJobs/schedulePushNotification.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/scheduledJobs/schedulePushNotification.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/services/sendPushNotification.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/services/sendPushNotification.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/node-fetch/LICENSE.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/node-fetch/LICENSE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/node-fetch/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/node-fetch/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/node-fetch/browser.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/node-fetch/lib/index.es.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/node-fetch/lib/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/node-fetch/lib/index.mjs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/node-fetch/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/node-fetch/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/config/db.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/db.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scheduledJobs/schedulePushNotification.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/scheduledJobs/schedulePushNotification.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/sendPushNotification.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/sendPushNotification.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/User.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -78,7 +68,7 @@
       <workItem from="1689498414041" duration="3459000" />
       <workItem from="1689799066250" duration="5962000" />
       <workItem from="1689898008053" duration="38000" />
-      <workItem from="1689898055411" duration="18620000" />
+      <workItem from="1689898055411" duration="19812000" />
     </task>
     <servers />
   </component>

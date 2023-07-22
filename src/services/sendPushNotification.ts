@@ -1,6 +1,7 @@
-import {db, messaging} from "../config";
+import {db} from "../config";
 import {Habit, User} from "../types";
-import fetch from 'node-fetch';
+import axios from "axios";
+import Expo, { ExpoPushMessage } from 'expo-server-sdk';
 
 export const sendPushNotification = async (userId: string, habitId: string) => {
     const userQuerySnapshot = await db
@@ -24,26 +25,19 @@ export const sendPushNotification = async (userId: string, habitId: string) => {
                     if (habitData) {
                         const habitName = habitData.name
 
-                        const message = {
+                        const expoPushMessages: ExpoPushMessage[] = [{
                             to: pushToken,
                             sound: 'default',
                             title: 'Habit Reminder',
                             body: `Don't forget to ${habitName}!`,
                             data: {habitId},
-                        };
+                        }];
+
+                        const expo = new Expo();
 
                         try {
-
-
-                            await fetch('https://exp.host/--/api/v2/push/send', {
-                                method: 'POST',
-                                headers: {
-                                    Accept: 'application/json',
-                                    'Accept-encoding': 'gzip, deflate',
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(message),
-                            });
+                            const response = await expo.sendPushNotificationsAsync(expoPushMessages)
+                            console.log('response - ', response)
                         } catch (error) {
                             console.error('Error sending push notification:', error);
                         }
