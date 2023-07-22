@@ -7,11 +7,9 @@
     <list default="true" id="c21ef858-d1c3-4501-b1bc-ce8e47772a76" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scheduledJobs/pushNotification.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/scheduledJobs/schedulePushNotification.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/User.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +37,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "yarn",
-    "settings.editor.selected.configurable": "settings.javascript.linters.tslint",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.JavaScript",
     "ts.external.directory.path": "/Users/jamesodeyale/Documents/Coding/Personal/happly/happly-server/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
@@ -66,7 +64,7 @@
       <workItem from="1689498414041" duration="3459000" />
       <workItem from="1689799066250" duration="5962000" />
       <workItem from="1689898008053" duration="38000" />
-      <workItem from="1689898055411" duration="15833000" />
+      <workItem from="1689898055411" duration="16937000" />
     </task>
     <servers />
   </component>
