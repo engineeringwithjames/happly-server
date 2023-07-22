@@ -18,6 +18,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const compression_1 = __importDefault(require("compression"));
 const firebase_admin_1 = __importDefault(require("firebase-admin"));
+const node_cron_1 = __importDefault(require("node-cron"));
 const serviceAccount = require("./serviceAccountKey.json");
 const app = (0, express_1.default)();
 const port = 8081;
@@ -32,27 +33,79 @@ firebase_admin_1.default.initializeApp({
     credential: firebase_admin_1.default.credential.cert(serviceAccount),
 });
 const db = firebase_admin_1.default.firestore();
-const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
+const getAllReminders = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userRef = db.collection('users');
-        const userSnapshot = yield userRef.get();
-        const users = [];
-        userSnapshot.forEach((doc) => {
-            users.push(doc.data());
-        });
-        // Process the list of users
-        console.log("List of users: ", users);
-        return users;
+        const remindersRef = db.collection('reminders');
+        const remindersSnapshot = yield remindersRef.get();
+        if (!remindersSnapshot.empty) {
+            console.log('remindersSnapshot', remindersSnapshot);
+        }
     }
     catch (e) {
         console.log(e);
     }
 });
-// Define a simple route
-app.get('/', (req, res) => {
-    getAllUsers();
-    res.send('Hello, this is your Node.js server with TypeScript!');
-});
+//
+// // Schedule habit notifications using a cron job
+// cron.schedule('* * * * *', async () => {
+//     // Get the current time
+//     const currentTime = new Date();
+//
+//     // Fetch users with habit notification time matching the current time from your database
+//     // (e.g., Firebase Firestore)
+//
+//     // Iterate over the users and send push notifications
+//     users.forEach(async (user) => {
+//         // Check if the habit notification time matches the current time
+//         if (user.habitNotificationTime === currentTime.toISOString()) {
+//             // Send push notification using Firebase Admin SDK
+//             const message = {
+//                 token: user.pushNotificationToken,
+//                 notification: {
+//                     title: 'Reminder',
+//                     body: 'It is time to carry out your habit!',
+//                 },
+//             };
+//
+//             try {
+//                 await admin.messaging().send(message);
+//             } catch (error) {
+//                 console.error('Error sending push notification:', error);
+//             }
+//         }
+//     });
+// });
+// Cron job to run every hour
+node_cron_1.default.schedule('* * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
+    // cron.schedule('* * * * * *', async () => {
+    // getAllReminders()
+    console.log('Running a task every hour');
+    try {
+        // Get the current time in UTC
+        const currentTime = new Date().toUTCString();
+        console.log('currentTime', currentTime);
+        // Fetch reminders for the current hour and minute
+        // const querySnapshot = await db
+        //     .collection('reminders')
+        //     .where('reminderHour', '>=', currentTime.getHours())
+        //     .where('reminderMinute', '<', currentTime.getMinutes())
+        //     .get();
+        //
+        // sortedReminders.forEach((reminder) => {
+        //     if (reminder.minute === currentTime.getMinutes()) {
+        //         // Fetch reminders for the current hour
+        //         const querySnapshot = await db
+        //             .collection('reminders')
+        //             .where('reminderTime', '>=', startOfHour)
+        //             .where('reminderTime', '<', endOfHour)
+        //             .get();
+        //     }
+        // })
+    }
+    catch (error) {
+        console.error('Error executing cron job:', error);
+    }
+}));
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
