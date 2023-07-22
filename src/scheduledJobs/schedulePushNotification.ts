@@ -7,7 +7,7 @@ export const schedulePushNotification = () => {
     cron.schedule('*/5 * * * * *', async () => {
 // cron.schedule('* * * * * *', async () => {
         // getAllReminders()
-        console.log('Running a task every hour');
+        console.log('Running a task every minute');
 
         try {
             // Get the current time in UTC

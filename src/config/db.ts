@@ -1,5 +1,5 @@
 import admin from "firebase-admin";
-const serviceAccount = require("./serviceAccountKey.json") ;
+const serviceAccount = require("../serviceAccountKey.json");
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -7,3 +7,4 @@ admin.initializeApp({
 });
 
 export const db = admin.firestore();
+export const messaging = admin.messaging(); // Initialize Firebase Cloud Messaging

@@ -1,18 +1,20 @@
-import {db} from "../config";
+import {db, messaging} from "../config";
 import {Habit, User} from "../types";
-
+import fetch from 'node-fetch';
 
 export const sendPushNotification = async (userId: string, habitId: string) => {
-    const userRef = db.collection('users').doc(userId)
-    const userSnapshot = await userRef.get()
+    const userQuerySnapshot = await db
+        .collection('users')
+        .where('id', '==', userId)
+        .get()
 
-    if (userSnapshot.exists) {
-        const userData = userSnapshot.data() as User
+    if (!userQuerySnapshot.empty) {
+        const userData = userQuerySnapshot.docs[0].data() as User
 
         if (userData) {
-            const expoPushToken = userData.expoPushToken
+            const pushToken = userData.pushToken
 
-            if (expoPushToken) {
+            if (pushToken) {
                 const habitRef = db.collection('habits').doc(habitId)
                 const habitSnapshot = await habitRef.get()
 
@@ -23,14 +25,16 @@ export const sendPushNotification = async (userId: string, habitId: string) => {
                         const habitName = habitData.name
 
                         const message = {
-                            to: expoPushToken,
+                            to: pushToken,
                             sound: 'default',
                             title: 'Habit Reminder',
                             body: `Don't forget to ${habitName}!`,
-                            data: { habitId },
-                        }
+                            data: {habitId},
+                        };
 
                         try {
+
+
                             await fetch('https://exp.host/--/api/v2/push/send', {
                                 method: 'POST',
                                 headers: {
@@ -39,9 +43,9 @@ export const sendPushNotification = async (userId: string, habitId: string) => {
                                     'Content-Type': 'application/json',
                                 },
                                 body: JSON.stringify(message),
-                            })
-                        } catch (e) {
-                            console.log(e)
+                            });
+                        } catch (error) {
+                            console.error('Error sending push notification:', error);
                         }
                     }
                 }

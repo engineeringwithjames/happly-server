@@ -5,5 +5,5 @@ export type User = {
   name: string;
   email: string;
   isAccountVerified: boolean;
-  expoPushToken: string;
+  pushToken: string;
 };

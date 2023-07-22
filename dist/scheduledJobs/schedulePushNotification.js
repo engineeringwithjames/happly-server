@@ -15,16 +15,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.schedulePushNotification = void 0;
 const node_cron_1 = __importDefault(require("node-cron"));
 const services_1 = require("../services");
+const config_1 = require("../config");
 const schedulePushNotification = () => {
     node_cron_1.default.schedule('*/5 * * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
         // cron.schedule('* * * * * *', async () => {
         // getAllReminders()
-        console.log('Running a task every hour');
+        console.log('Running a task every minute');
         try {
             // Get the current time in UTC
             const currentTime = new Date();
             // Fetch reminders for the current hour and minute
-            const reminderQuerySnapshot = yield db
+            const reminderQuerySnapshot = yield config_1.db
                 .collection('reminders')
                 .where('reminderHour', '==', currentTime.getUTCHours())
                 .where('reminderMinute', '==', currentTime.getUTCMinutes())
