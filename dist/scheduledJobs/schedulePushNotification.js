@@ -40,7 +40,9 @@ const schedulePushNotification = () => {
                         }
                         else {
                             // get current day of the week in non-UTC
+                            // use moment to get current day of the week using
                             const currentDay = currentTime.getDay();
+                            // if (reminderData.daysOfWeek.includes(currentDay))
                             // if (reminderData.daysOfWeek.includes(currentDay)) {
                             //     console.log('reminderData.daysOfWeek', reminderData.daysOfWeek)
                             //     sendPushNotification(reminderData.userId, reminderData.habitId)

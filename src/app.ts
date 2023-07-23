@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import compression from "compression";
 import {schedulePushNotification} from "./scheduledJobs";
+import moment from "moment";
 
 const app: Express = express();
 const port = 8081;

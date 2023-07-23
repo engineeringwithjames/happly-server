@@ -2,22 +2,21 @@ import cron from "node-cron";
 import {sendPushNotification} from "../services";
 import {db} from "../config";
 import {Reminder} from "../types";
+import moment from "moment";
 
 export const schedulePushNotification = () => {
-    cron.schedule('*/5 * * * * *', async () => {
-// cron.schedule('* * * * * *', async () => {
-        // getAllReminders()
+    // cron.schedule('*/5 * * * * *', async () => {
+    cron.schedule('* * * * * *', async () => {
         console.log('Running a task every minute');
 
         try {
             // Get the current time in UTC
-            const currentTime = new Date();
-
+            const currentTime = moment.utc().format('HH:mm');
             // Fetch reminders for the current hour and minute
             const reminderQuerySnapshot = await db
                 .collection('reminders')
-                .where('reminderHour', '==', currentTime.getUTCHours())
-                .where('reminderMinute', '==', currentTime.getUTCMinutes())
+                .where('utcReminderHour', '==', parseInt(currentTime.split(':')[0]))
+                .where('utcReminderMinute', '==', parseInt(currentTime.split(':')[1]))
                 .get();
 
             if (!reminderQuerySnapshot.empty) {
@@ -25,15 +24,12 @@ export const schedulePushNotification = () => {
                     if (doc.exists) {
                         const reminderData = doc.data() as Reminder
                         if (reminderData.isDaily) {
-                            console.log('reminderData.isDaily',reminderData.isDaily)
                             sendPushNotification(reminderData.userId, reminderData.habitId)
                         } else {
-                            // get current day of the week in non-UTC
-                            const currentDay = currentTime.getDay()
-                            // if (reminderData.daysOfWeek.includes(currentDay)) {
-                            //     console.log('reminderData.daysOfWeek', reminderData.daysOfWeek)
-                            //     sendPushNotification(reminderData.userId, reminderData.habitId)
-                            // }
+                            const currentDay = moment().format('dddd')
+                            if (reminderData.daysOfWeek.includes(currentDay)) {
+                                sendPushNotification(reminderData.userId, reminderData.habitId)
+                            }
                         }
                     } else {
                         console.log('No such document!')

@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendPushNotification = void 0;
 const config_1 = require("../config");
-const axios_1 = __importDefault(require("axios"));
+const expo_server_sdk_1 = __importDefault(require("expo-server-sdk"));
 const sendPushNotification = (userId, habitId) => __awaiter(void 0, void 0, void 0, function* () {
     const userQuerySnapshot = yield config_1.db
         .collection('users')
@@ -31,23 +31,17 @@ const sendPushNotification = (userId, habitId) => __awaiter(void 0, void 0, void
                     const habitData = habitSnapshot.data();
                     if (habitData) {
                         const habitName = habitData.name;
-                        const message = {
-                            to: pushToken,
-                            sound: 'default',
-                            title: 'Habit Reminder',
-                            body: `Don't forget to ${habitName}!`,
-                            data: { habitId },
-                        };
+                        const expoPushMessages = [{
+                                to: pushToken,
+                                sound: 'default',
+                                title: 'Habit Reminder',
+                                body: `Don't forget to ${habitName}!`,
+                                data: { habitId },
+                            }];
+                        const expo = new expo_server_sdk_1.default();
                         try {
-                            yield axios_1.default.post('https://api.expo.dev/v2/push/sendr', {
-                                method: 'POST',
-                                headers: {
-                                    Accept: 'application/json',
-                                    'Accept-encoding': 'gzip, deflate',
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(message),
-                            });
+                            const response = yield expo.sendPushNotificationsAsync(expoPushMessages);
+                            console.log('response - ', response);
                         }
                         catch (error) {
                             console.error('Error sending push notification:', error);

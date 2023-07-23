@@ -1,6 +1,5 @@
 import {db} from "../config";
 import {Habit, User} from "../types";
-import axios from "axios";
 import Expo, { ExpoPushMessage } from 'expo-server-sdk';
 
 export const sendPushNotification = async (userId: string, habitId: string) => {
