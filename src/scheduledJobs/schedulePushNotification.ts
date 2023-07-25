@@ -23,6 +23,7 @@ export const schedulePushNotification = () => {
                 reminderQuerySnapshot.forEach((doc) => {
                     if (doc.exists) {
                         const reminderData = doc.data() as Reminder
+                        
                         if (reminderData.isDaily) {
                             sendPushNotification(reminderData.userId, reminderData.habitId)
                         } else {
