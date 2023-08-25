@@ -1,2 +1,1 @@
-src/.env:
-    cp src/.env.example src/.env
+src/serviceAccountKey.json
