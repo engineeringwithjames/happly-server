@@ -1,14 +1,10 @@
-import express, {
-  Express,
-  Request,
-  Response
-} from "express";
+import express, { Express, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import cors from "cors";
 import compression from "compression";
 import { schedulePushNotification } from "./scheduledJobs";
-import moment from "moment";
+require("dotenv").config();
 
 const app: Express = express();
 const port = 8081;
@@ -32,7 +28,5 @@ app.get("/", (req: Request, res: Response) => {
 
 // Start the server
 app.listen(port, () => {
-  console.log(
-    `Server is running on http://localhost:${port}`
-  );
+  console.log(`Server is running on http://localhost:${port}`);
 });
