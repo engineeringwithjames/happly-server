@@ -19,16 +19,16 @@ const config_1 = require("../config");
 const moment_1 = __importDefault(require("moment"));
 const schedulePushNotification = () => {
     // cron.schedule('*/5 * * * * *', async () => {
-    node_cron_1.default.schedule('* * * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
-        console.log('Running a task every minute');
+    node_cron_1.default.schedule("* * * * * *", () => __awaiter(void 0, void 0, void 0, function* () {
+        console.log("Running a task every minute");
         try {
             // Get the current time in UTC
-            const currentTime = moment_1.default.utc().format('HH:mm');
+            const currentTime = moment_1.default.utc().format("HH:mm");
             // Fetch reminders for the current hour and minute
             const reminderQuerySnapshot = yield config_1.db
-                .collection('reminders')
-                .where('utcReminderHour', '==', parseInt(currentTime.split(':')[0]))
-                .where('utcReminderMinute', '==', parseInt(currentTime.split(':')[1]))
+                .collection("reminders")
+                .where("utcReminderHour", "==", parseInt(currentTime.split(":")[0]))
+                .where("utcReminderMinute", "==", parseInt(currentTime.split(":")[1]))
                 .get();
             if (!reminderQuerySnapshot.empty) {
                 reminderQuerySnapshot.forEach((doc) => {
@@ -38,23 +38,23 @@ const schedulePushNotification = () => {
                             (0, services_1.sendPushNotification)(reminderData.userId, reminderData.habitId);
                         }
                         else {
-                            const currentDay = (0, moment_1.default)().format('dddd');
+                            const currentDay = (0, moment_1.default)().format("dddd");
                             if (reminderData.daysOfWeek.includes(currentDay)) {
                                 (0, services_1.sendPushNotification)(reminderData.userId, reminderData.habitId);
                             }
                         }
                     }
                     else {
-                        console.log('No such document!');
+                        console.log("No such document!");
                     }
                 });
             }
             else {
-                console.log('querySnapshot is empty');
+                console.log("querySnapshot is empty");
             }
         }
         catch (error) {
-            console.error('Error executing cron job:', error);
+            console.error("Error executing cron job:", error);
         }
     }));
 };

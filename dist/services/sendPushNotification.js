@@ -16,35 +16,34 @@ exports.sendPushNotification = void 0;
 const config_1 = require("../config");
 const expo_server_sdk_1 = __importDefault(require("expo-server-sdk"));
 const sendPushNotification = (userId, habitId) => __awaiter(void 0, void 0, void 0, function* () {
-    const userQuerySnapshot = yield config_1.db
-        .collection('users')
-        .where('id', '==', userId)
-        .get();
+    const userQuerySnapshot = yield config_1.db.collection("users").where("id", "==", userId).get();
     if (!userQuerySnapshot.empty) {
         const userData = userQuerySnapshot.docs[0].data();
         if (userData) {
             const pushToken = userData.pushToken;
             if (pushToken) {
-                const habitRef = config_1.db.collection('habits').doc(habitId);
+                const habitRef = config_1.db.collection("habits").doc(habitId);
                 const habitSnapshot = yield habitRef.get();
                 if (habitSnapshot.exists) {
                     const habitData = habitSnapshot.data();
                     if (habitData) {
                         const habitName = habitData.name;
-                        const expoPushMessages = [{
+                        const expoPushMessages = [
+                            {
                                 to: pushToken,
-                                sound: 'default',
-                                title: 'Habit Reminder',
+                                sound: "default",
+                                title: "Habit Reminder",
                                 body: `Don't forget to ${habitName}!`,
-                                data: { habitId },
-                            }];
+                                data: { habitId }
+                            }
+                        ];
                         const expo = new expo_server_sdk_1.default();
                         try {
                             const response = yield expo.sendPushNotificationsAsync(expoPushMessages);
-                            console.log('response - ', response);
+                            console.log("response - ", response);
                         }
                         catch (error) {
-                            console.error('Error sending push notification:', error);
+                            console.error("Error sending push notification:", error);
                         }
                     }
                 }
