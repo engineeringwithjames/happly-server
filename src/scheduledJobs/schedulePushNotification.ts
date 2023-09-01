@@ -12,7 +12,7 @@ export const schedulePushNotification = () => {
     try {
       // Get the current time in UTC
       const currentTime = moment.utc().format("HH:mm");
-      console.log("current Time - ", currentTime);
+
       // Fetch reminders for the current hour and minute
       const reminderQuerySnapshot = await db
         .collection("reminders")
