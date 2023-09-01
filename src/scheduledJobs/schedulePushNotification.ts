@@ -12,15 +12,15 @@ export const schedulePushNotification = () => {
     try {
       // Get the current time in UTC
       const currentTime = moment.utc().format("HH:mm");
+      console.log("current Time - ", currentTime);
       // Fetch reminders for the current hour and minute
       const reminderQuerySnapshot = await db
         .collection("reminders")
         .where("utcReminderHour", "==", parseInt(currentTime.split(":")[0]))
         .where("utcReminderMinute", "==", parseInt(currentTime.split(":")[1]))
         .get();
-        console.log("reminderQuerySnapshot 1", currentTime);
-        console.log("reminderQuerySnapshot 2", reminderQuerySnapshot);
-        if (!reminderQuerySnapshot.empty) {
+
+      if (!reminderQuerySnapshot.empty) {
         reminderQuerySnapshot.forEach((doc) => {
           if (doc.exists) {
             const reminderData = doc.data() as Reminder;
