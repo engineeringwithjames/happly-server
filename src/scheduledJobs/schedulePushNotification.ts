@@ -19,6 +19,7 @@ export const schedulePushNotification = () => {
         .where("utcReminderHour", "==", parseInt(currentTime.split(":")[0]))
         .where("utcReminderMinute", "==", parseInt(currentTime.split(":")[1]))
         .get();
+      console.log("reminderQuerySnapshot - ", reminderQuerySnapshot);
 
       if (!reminderQuerySnapshot.empty) {
         reminderQuerySnapshot.forEach((doc) => {
