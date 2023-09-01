@@ -5,13 +5,14 @@ import { Reminder } from "../types";
 import moment from "moment";
 
 export const schedulePushNotification = () => {
-  // cron.schedule('*/5 * * * * *', async () => {
-  cron.schedule("* * * * * *", async () => {
+  // cron.schedule("*/5 * * * * *", async () => {
+  cron.schedule("* * * * * ", async () => {
     console.log("Running a task every minute");
 
     try {
       // Get the current time in UTC
       const currentTime = moment.utc().format("HH:mm");
+      console.log("currentTime", currentTime);
 
       // Fetch reminders for the current hour and minute
       const reminderQuerySnapshot = await db
@@ -19,12 +20,12 @@ export const schedulePushNotification = () => {
         .where("utcReminderHour", "==", parseInt(currentTime.split(":")[0]))
         .where("utcReminderMinute", "==", parseInt(currentTime.split(":")[1]))
         .get();
-      console.log("reminderQuerySnapshot - ", reminderQuerySnapshot);
 
       if (!reminderQuerySnapshot.empty) {
         reminderQuerySnapshot.forEach((doc) => {
           if (doc.exists) {
             const reminderData = doc.data() as Reminder;
+            console.log("reminderData - ", reminderData);
 
             if (reminderData.isDaily) {
               sendPushNotification(reminderData.userId, reminderData.habitId);
