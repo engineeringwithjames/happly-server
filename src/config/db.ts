@@ -12,8 +12,6 @@ const serviceAccount: ServiceAccount = {
   privateKey: SERVICE_ACCOUNT_PRIVATE_KEY.privateKey
 };
 
-console.log(serviceAccount);
-
 // Initialize Firebase Admin SDK
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
