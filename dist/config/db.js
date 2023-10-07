@@ -14,7 +14,6 @@ const serviceAccount = {
     clientEmail: process.env.SERVICE_ACCOUNT_CLIENT_EMAIL,
     privateKey: SERVICE_ACCOUNT_PRIVATE_KEY.privateKey
 };
-
 // Initialize Firebase Admin SDK
 firebase_admin_1.default.initializeApp({
     credential: firebase_admin_1.default.credential.cert(serviceAccount)

@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "fe27c424-d59b-4757-ad8a-24229a50d497"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "com.engineeringwithjames.happlyserver"
+    }
+  }
+}
