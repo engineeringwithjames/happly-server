@@ -11,7 +11,7 @@ const compression_1 = __importDefault(require("compression"));
 const scheduledJobs_1 = require("./scheduledJobs");
 require("dotenv").config();
 const app = (0, express_1.default)();
-const port = 8081;
+const port = 3000;
 app.use((0, cors_1.default)({
     credentials: true
 }));

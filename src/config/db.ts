@@ -5,7 +5,10 @@ require("dotenv").config();
 const serviceAccount: ServiceAccount = {
   projectId: process.env.SERVICE_ACCOUNT_PROJECT_ID,
   clientEmail: process.env.SERVICE_ACCOUNT_CLIENT_EMAIL,
-  privateKey: process.env.SERVICE_ACCOUNT_PRIVATE_KEY
+  privateKey:
+    process.env.CURRENT_ENVIRONMENT === "production"
+      ? process.env.SERVICE_ACCOUNT_PRIVATE_KEY
+      : JSON.parse(process.env.SERVICE_ACCOUNT_PRIVATE_KEY || "")?.privateKey
 };
 
 // Initialize Firebase Admin SDK
