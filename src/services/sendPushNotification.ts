@@ -15,6 +15,8 @@ export const sendPushNotification = async (userId: string, habitId: string) => {
         const habitRef = db.collection("habits").doc(habitId);
         const habitSnapshot = await habitRef.get();
 
+        console.log("habitSnapshot - ", habitSnapshot);
+
         if (habitSnapshot.exists) {
           const habitData = habitSnapshot.data() as Habit;
 

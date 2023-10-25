@@ -24,6 +24,7 @@ const sendPushNotification = (userId, habitId) => __awaiter(void 0, void 0, void
             if (pushToken) {
                 const habitRef = config_1.db.collection("habits").doc(habitId);
                 const habitSnapshot = yield habitRef.get();
+                console.log("habitSnapshot - ", habitSnapshot);
                 if (habitSnapshot.exists) {
                     const habitData = habitSnapshot.data();
                     if (habitData) {

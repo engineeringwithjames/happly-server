@@ -7,7 +7,7 @@ import { schedulePushNotification } from "./scheduledJobs";
 require("dotenv").config();
 
 const app: Express = express();
-const port = 3000;
+const port = 8081;
 
 app.use(
   cors({
