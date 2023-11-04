@@ -1,16 +1,15 @@
 import cron from "node-cron";
-import { sendStreakVerification } from "../services";
+import { sendStreakEndingReminder } from "../services";
 import { db } from "../config";
 import { User } from "../types";
-
 const moment = require("moment-timezone");
 
-export const streakVerification = () => {
-  console.log("streakVerification - Running a task every hour");
+export const streakEndingReminder = () => {
+  console.log("streakEndingReminder - Running a task every hour");
   cron.schedule("0 * * * *", async () => {
     try {
+      // fetch all users check if they have daily habits and if they do, check if they have completed them if not send a push notification for that user
       const userQuerySnapshot = await db.collection("users").get();
-
       if (!userQuerySnapshot.empty) {
         userQuerySnapshot.forEach((doc) => {
           if (doc.exists) {
@@ -21,15 +20,16 @@ export const streakVerification = () => {
               const userCurrentDateTime = moment().tz(userTimezone);
               const formattedDateTime = userCurrentDateTime.format("HH:mm:ssA");
 
-              if (formattedDateTime === "00:00:00AM") {
-                console.log("send streak verification");
-                sendStreakVerification(userData.id, userCurrentDateTime);
+              if (formattedDateTime === "21:00:00PM") {
+                sendStreakEndingReminder(userData, userCurrentDateTime);
               }
             }
           } else {
             console.log("No such document!");
           }
         });
+      } else {
+        console.log("querySnapshot is empty");
       }
     } catch (error) {
       console.error("Error executing cron job:", error);

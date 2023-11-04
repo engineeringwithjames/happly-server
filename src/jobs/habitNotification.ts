@@ -1,14 +1,13 @@
 import cron from "node-cron";
-import { sendPushNotification } from "../services";
+import { sendHabitNotification } from "../services";
 import { db } from "../config";
 import { Reminder } from "../types";
 import moment from "moment";
 
-export const pushNotification = () => {
+export const habitNotification = () => {
   // cron.schedule("*/5 * * * * *", async () => {
+  console.log("habitNotification - Running a task every minute");
   cron.schedule("* * * * * ", async () => {
-    console.log("Running a task every minute");
-
     try {
       // Get the current time in UTC
       const currentTime = moment.utc().format("HH:mm");
@@ -24,14 +23,12 @@ export const pushNotification = () => {
         reminderQuerySnapshot.forEach((doc) => {
           if (doc.exists) {
             const reminderData = doc.data() as Reminder;
-            console.log("reminderData - ", reminderData);
-
             if (reminderData.isDaily) {
-              sendPushNotification(reminderData.userId, reminderData.habitId);
+              sendHabitNotification(reminderData.userId, reminderData.habitId);
             } else {
               const currentDay = moment().format("dddd");
               if (reminderData.daysOfWeek.includes(currentDay)) {
-                sendPushNotification(reminderData.userId, reminderData.habitId);
+                sendHabitNotification(reminderData.userId, reminderData.habitId);
               }
             }
           } else {

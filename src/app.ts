@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import cors from "cors";
 import compression from "compression";
-import { pushNotification, streakVerification } from "./jobs";
+import { habitNotification, streakEndingReminder, streakVerification } from "./jobs";
 require("dotenv").config();
 
 const app: Express = express();
@@ -21,11 +21,12 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 // Cron job to run every minute
-pushNotification();
+habitNotification();
 streakVerification();
+streakEndingReminder();
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World New!");
+  res.send("Hello World - Version 12!");
 });
 
 // Start the server
