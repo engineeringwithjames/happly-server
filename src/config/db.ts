@@ -8,7 +8,7 @@ const serviceAccount: ServiceAccount = {
   privateKey:
     process.env.CURRENT_ENVIRONMENT === "production"
       ? process.env.SERVICE_ACCOUNT_PRIVATE_KEY
-      : JSON.parse(process.env.SERVICE_ACCOUNT_PRIVATE_KEY || "")?.privateKey
+      : JSON.parse(process.env.SERVICE_ACCOUNT_PRIVATE_KEY || "")?.private_key
 };
 
 // Initialize Firebase Admin SDK

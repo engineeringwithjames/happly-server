@@ -4,7 +4,7 @@ import { db } from "../config";
 import { Reminder } from "../types";
 import moment from "moment";
 
-export const schedulePushNotification = () => {
+export const pushNotification = () => {
   // cron.schedule("*/5 * * * * *", async () => {
   cron.schedule("* * * * * ", async () => {
     console.log("Running a task every minute");
@@ -12,7 +12,6 @@ export const schedulePushNotification = () => {
     try {
       // Get the current time in UTC
       const currentTime = moment.utc().format("HH:mm");
-      console.log("currentTime", currentTime);
 
       // Fetch reminders for the current hour and minute
       const reminderQuerySnapshot = await db

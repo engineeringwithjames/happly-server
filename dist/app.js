@@ -21,7 +21,7 @@ app.use(body_parser_1.default.json());
 // Cron job to run every minute
 (0, scheduledJobs_1.schedulePushNotification)();
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.send("Hello World New!");
 });
 // Start the server
 app.listen(port, () => {
