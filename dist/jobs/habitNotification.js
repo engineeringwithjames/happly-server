@@ -12,19 +12,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.schedulePushNotification = void 0;
+exports.habitNotification = void 0;
 const node_cron_1 = __importDefault(require("node-cron"));
 const services_1 = require("../services");
 const config_1 = require("../config");
 const moment_1 = __importDefault(require("moment"));
-const schedulePushNotification = () => {
+const habitNotification = () => {
     // cron.schedule("*/5 * * * * *", async () => {
+    console.log("habitNotification - Running a task every minute");
     node_cron_1.default.schedule("* * * * * ", () => __awaiter(void 0, void 0, void 0, function* () {
-        console.log("Running a task every minute");
         try {
             // Get the current time in UTC
             const currentTime = moment_1.default.utc().format("HH:mm");
-            console.log("currentTime", currentTime);
             // Fetch reminders for the current hour and minute
             const reminderQuerySnapshot = yield config_1.db
                 .collection("reminders")
@@ -35,14 +34,13 @@ const schedulePushNotification = () => {
                 reminderQuerySnapshot.forEach((doc) => {
                     if (doc.exists) {
                         const reminderData = doc.data();
-                        console.log("reminderData - ", reminderData);
                         if (reminderData.isDaily) {
-                            (0, services_1.sendPushNotification)(reminderData.userId, reminderData.habitId);
+                            (0, services_1.sendHabitNotification)(reminderData.userId, reminderData.habitId);
                         }
                         else {
                             const currentDay = (0, moment_1.default)().format("dddd");
                             if (reminderData.daysOfWeek.includes(currentDay)) {
-                                (0, services_1.sendPushNotification)(reminderData.userId, reminderData.habitId);
+                                (0, services_1.sendHabitNotification)(reminderData.userId, reminderData.habitId);
                             }
                         }
                     }
@@ -60,4 +58,4 @@ const schedulePushNotification = () => {
         }
     }));
 };
-exports.schedulePushNotification = schedulePushNotification;
+exports.habitNotification = habitNotification;

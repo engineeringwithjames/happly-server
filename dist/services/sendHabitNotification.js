@@ -8,14 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendPushNotification = void 0;
+exports.sendHabitNotification = void 0;
 const config_1 = require("../config");
-const expo_server_sdk_1 = __importDefault(require("expo-server-sdk"));
-const sendPushNotification = (userId, habitId) => __awaiter(void 0, void 0, void 0, function* () {
+const sendPushNotification_1 = require("../utils/sendPushNotification");
+const sendHabitNotification = (userId, habitId) => __awaiter(void 0, void 0, void 0, function* () {
     const userQuerySnapshot = yield config_1.db.collection("users").where("id", "==", userId).get();
     if (!userQuerySnapshot.empty) {
         const userData = userQuerySnapshot.docs[0].data();
@@ -24,32 +21,18 @@ const sendPushNotification = (userId, habitId) => __awaiter(void 0, void 0, void
             if (pushToken) {
                 const habitRef = config_1.db.collection("habits").doc(habitId);
                 const habitSnapshot = yield habitRef.get();
-                console.log("habitSnapshot - ", habitSnapshot);
                 if (habitSnapshot.exists) {
                     const habitData = habitSnapshot.data();
                     if (habitData) {
                         const habitName = habitData.name;
-                        const expoPushMessages = [
-                            {
-                                to: pushToken,
-                                sound: "default",
-                                title: "Habit Reminder",
-                                body: `Don't forget to ${habitName}!`,
-                                data: { habitId }
-                            }
-                        ];
-                        const expo = new expo_server_sdk_1.default();
-                        try {
-                            const response = yield expo.sendPushNotificationsAsync(expoPushMessages);
-                            console.log("response - ", response);
-                        }
-                        catch (error) {
-                            console.error("Error sending push notification:", error);
-                        }
+                        const habitId = habitData.id;
+                        (0, sendPushNotification_1.sendPushNotification)(pushToken, "Habit Reminder", `Don't forget to ${habitName}!`, {
+                            habitId
+                        });
                     }
                 }
             }
         }
     }
 });
-exports.sendPushNotification = sendPushNotification;
+exports.sendHabitNotification = sendHabitNotification;

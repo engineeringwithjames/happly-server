@@ -12,7 +12,7 @@ const serviceAccount = {
     clientEmail: process.env.SERVICE_ACCOUNT_CLIENT_EMAIL,
     privateKey: process.env.CURRENT_ENVIRONMENT === "production"
         ? process.env.SERVICE_ACCOUNT_PRIVATE_KEY
-        : (_a = JSON.parse(process.env.SERVICE_ACCOUNT_PRIVATE_KEY || "")) === null || _a === void 0 ? void 0 : _a.privateKey
+        : (_a = JSON.parse(process.env.SERVICE_ACCOUNT_PRIVATE_KEY || "")) === null || _a === void 0 ? void 0 : _a.private_key
 };
 // Initialize Firebase Admin SDK
 firebase_admin_1.default.initializeApp({

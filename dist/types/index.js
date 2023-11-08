@@ -19,3 +19,4 @@ __exportStar(require("./Reminder"), exports);
 __exportStar(require("./User"), exports);
 __exportStar(require("./TimeOfDay"), exports);
 __exportStar(require("./Habit"), exports);
+__exportStar(require("./Streak"), exports);
