@@ -26,7 +26,7 @@ streakVerification();
 streakEndingReminder();
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World - Version 12!");
+  res.send("Hello World - Version 12 New!");
 });
 
 // Start the server
