@@ -17,37 +17,31 @@ const node_cron_1 = __importDefault(require("node-cron"));
 const services_1 = require("../services");
 const config_1 = require("../config");
 const moment_1 = __importDefault(require("moment"));
+const momentTz = require("moment-timezone");
 const habitNotification = () => {
     // cron.schedule("*/5 * * * * *", async () => {
     console.log("habitNotification - Running a task every minute");
     node_cron_1.default.schedule("* * * * * ", () => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            // Get the current time in UTC
-            const currentTime = moment_1.default.utc().format("HH:mm");
-            // Fetch reminders for the current hour and minute
-            const reminderQuerySnapshot = yield config_1.db
-                .collection("reminders")
-                .where("utcReminderHour", "==", parseInt(currentTime.split(":")[0]))
-                .where("utcReminderMinute", "==", parseInt(currentTime.split(":")[1]))
-                .get();
-            if (!reminderQuerySnapshot.empty) {
-                reminderQuerySnapshot.forEach((doc) => {
-                    if (doc.exists) {
-                        const reminderData = doc.data();
-                        if (reminderData.isDaily) {
-                            (0, services_1.sendHabitNotification)(reminderData.userId, reminderData.habitId);
-                        }
-                        else {
-                            const currentDay = (0, moment_1.default)().format("dddd");
-                            if (reminderData.daysOfWeek.includes(currentDay)) {
-                                (0, services_1.sendHabitNotification)(reminderData.userId, reminderData.habitId);
-                            }
+            // Inefficient solution
+            const remindersQuerySnapshot = yield config_1.db.collection("reminders").get();
+            if (!remindersQuerySnapshot.empty) {
+                remindersQuerySnapshot.forEach((doc) => __awaiter(void 0, void 0, void 0, function* () {
+                    const reminderData = doc.data();
+                    const currentReminderTime = (0, moment_1.default)(reminderData.reminder).format("HH:mm");
+                    const userId = reminderData.userId;
+                    const userQuerySnapshot = yield config_1.db.collection("users").where("id", "==", userId).get();
+                    if (!userQuerySnapshot.empty) {
+                        const userData = userQuerySnapshot.docs[0].data();
+                        const userTimezone = userData.timezone;
+                        const userCurrentDateTime = momentTz().tz(userTimezone);
+                        const formattedDateTime = userCurrentDateTime.format("HH:mm");
+                        const pushToken = userData.pushToken;
+                        if (pushToken && formattedDateTime === currentReminderTime) {
+                            (0, services_1.sendHabitNotification)(pushToken, reminderData.habitId);
                         }
                     }
-                    else {
-                        console.log("No such document!");
-                    }
-                });
+                }));
             }
             else {
                 console.log("querySnapshot is empty");

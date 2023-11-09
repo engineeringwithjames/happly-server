@@ -1,38 +1,33 @@
 import cron from "node-cron";
 import { sendHabitNotification } from "../services";
 import { db } from "../config";
-import { Reminder } from "../types";
+import { Reminder, User } from "../types";
 import moment from "moment";
+const momentTz = require("moment-timezone");
 
 export const habitNotification = () => {
   // cron.schedule("*/5 * * * * *", async () => {
   console.log("habitNotification - Running a task every minute");
   cron.schedule("* * * * * ", async () => {
     try {
-      // Get the current time in UTC
-      const currentTime = moment.utc().format("HH:mm");
+      // Inefficient solution
+      const remindersQuerySnapshot = await db.collection("reminders").get();
 
-      // Fetch reminders for the current hour and minute
-      const reminderQuerySnapshot = await db
-        .collection("reminders")
-        .where("utcReminderHour", "==", parseInt(currentTime.split(":")[0]))
-        .where("utcReminderMinute", "==", parseInt(currentTime.split(":")[1]))
-        .get();
-
-      if (!reminderQuerySnapshot.empty) {
-        reminderQuerySnapshot.forEach((doc) => {
-          if (doc.exists) {
-            const reminderData = doc.data() as Reminder;
-            if (reminderData.isDaily) {
-              sendHabitNotification(reminderData.userId, reminderData.habitId);
-            } else {
-              const currentDay = moment().format("dddd");
-              if (reminderData.daysOfWeek.includes(currentDay)) {
-                sendHabitNotification(reminderData.userId, reminderData.habitId);
-              }
+      if (!remindersQuerySnapshot.empty) {
+        remindersQuerySnapshot.forEach(async (doc) => {
+          const reminderData = doc.data() as Reminder;
+          const currentReminderTime = moment(reminderData.reminder).format("HH:mm");
+          const userId = reminderData.userId;
+          const userQuerySnapshot = await db.collection("users").where("id", "==", userId).get();
+          if (!userQuerySnapshot.empty) {
+            const userData = userQuerySnapshot.docs[0].data() as User;
+            const userTimezone = userData.timezone;
+            const userCurrentDateTime = momentTz().tz(userTimezone);
+            const formattedDateTime = userCurrentDateTime.format("HH:mm");
+            const pushToken = userData.pushToken;
+            if (pushToken && formattedDateTime === currentReminderTime) {
+              sendHabitNotification(pushToken, reminderData.habitId);
             }
-          } else {
-            console.log("No such document!");
           }
         });
       } else {
