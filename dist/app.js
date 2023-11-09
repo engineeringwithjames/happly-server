@@ -23,7 +23,7 @@ app.use(body_parser_1.default.json());
 (0, jobs_1.streakVerification)();
 (0, jobs_1.streakEndingReminder)();
 app.get("/", (req, res) => {
-    res.send("Hello World - Version 12 New!");
+    res.send("Hello World - Version 17 New!");
 });
 // Start the server
 app.listen(port, () => {
