@@ -21,12 +21,26 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 // Cron job to run every minute
-habitNotification();
-streakVerification();
-streakEndingReminder();
+app.post("/habitNotification", (req: Request, res: Response) => {
+  habitNotification();
+  res.send("Habit Notification 1");
+});
+
+app.post("/streakVerification", (req: Request, res: Response) => {
+  streakVerification();
+  res.send("Habit Notification 1");
+});
+
+app.post("/streakEndingReminder", (req: Request, res: Response) => {
+  streakEndingReminder();
+  res.send("Habit Notification 1");
+});
+// habitNotification();
+// streakVerification();
+// streakEndingReminder();
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World - Version 17 New!");
+  res.send("Hello World - Version 20 New!");
 });
 
 // Start the server

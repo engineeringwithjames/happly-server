@@ -19,8 +19,9 @@ const config_1 = require("../config");
 const moment = require("moment-timezone");
 const streakVerification = () => {
     console.log("streakVerification - Running a task every hour");
-    node_cron_1.default.schedule("0 * * * *", () => __awaiter(void 0, void 0, void 0, function* () {
+    node_cron_1.default.schedule("* * * * * *", () => __awaiter(void 0, void 0, void 0, function* () {
         try {
+            console.log("streakVerification - Running a task every hour");
             const userQuerySnapshot = yield config_1.db.collection("users").get();
             if (!userQuerySnapshot.empty) {
                 userQuerySnapshot.forEach((doc) => {

@@ -7,8 +7,9 @@ const moment = require("moment-timezone");
 
 export const streakVerification = () => {
   console.log("streakVerification - Running a task every hour");
-  cron.schedule("0 * * * *", async () => {
+  cron.schedule("* * * * * *", async () => {
     try {
+      console.log("streakVerification - Running a task every hour");
       const userQuerySnapshot = await db.collection("users").get();
 
       if (!userQuerySnapshot.empty) {
