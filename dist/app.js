@@ -21,15 +21,15 @@ app.use(body_parser_1.default.json());
 // Cron job to run every minute
 app.post("/habitNotification", (req, res) => {
     (0, jobs_1.habitNotification)();
-    res.send("Habit Notification 1");
+    res.send("habitNotification");
 });
 app.post("/streakVerification", (req, res) => {
     (0, jobs_1.streakVerification)();
-    res.send("Habit Notification 1");
+    res.send("streakVerification");
 });
 app.post("/streakEndingReminder", (req, res) => {
     (0, jobs_1.streakEndingReminder)();
-    res.send("Habit Notification 1");
+    res.send("streakEndingReminder");
 });
 // habitNotification();
 // streakVerification();
