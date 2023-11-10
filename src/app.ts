@@ -23,17 +23,17 @@ app.use(bodyParser.json());
 // Cron job to run every minute
 app.post("/habitNotification", (req: Request, res: Response) => {
   habitNotification();
-  res.send("Habit Notification 1");
+  res.send("habitNotification");
 });
 
 app.post("/streakVerification", (req: Request, res: Response) => {
   streakVerification();
-  res.send("Habit Notification 1");
+  res.send("streakVerification");
 });
 
 app.post("/streakEndingReminder", (req: Request, res: Response) => {
   streakEndingReminder();
-  res.send("Habit Notification 1");
+  res.send("streakEndingReminder");
 });
 // habitNotification();
 // streakVerification();
