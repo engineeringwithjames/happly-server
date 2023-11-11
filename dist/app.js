@@ -33,7 +33,7 @@ app.post("/streakEndingReminder", (req, res) => {
 });
 // habitNotification();
 // streakVerification();
-// streakEndingReminder();
+(0, jobs_1.streakEndingReminder)();
 app.get("/", (req, res) => {
     res.send("Hello World - Version 20 New!");
 });
