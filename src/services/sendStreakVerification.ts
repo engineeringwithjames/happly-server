@@ -5,7 +5,6 @@ import { Frequency, Habit, Streak } from "../types";
 export const sendStreakVerification = async (userId: string, userCurrentDate: string) => {
   try {
     const streakQuerySnapshot = await db.collection("streak").where("userId", "==", userId).get();
-
     if (!streakQuerySnapshot.empty) {
       streakQuerySnapshot.forEach(async (doc) => {
         if (doc.exists) {
@@ -15,7 +14,9 @@ export const sendStreakVerification = async (userId: string, userCurrentDate: st
             .subtract(1, "days")
             .format("YYYY-MM-DD");
           const todayDateFromUserCurrentDate = moment(userCurrentDate).format("YYYY-MM-DD");
-
+          console.log("lastUpdatedDate", lastUpdatedDate);
+          console.log("yesterdayDateFromUserCurrentDate", lastUpdatedDate);
+          console.log("todayDateFromUserCurrentDate", lastUpdatedDate);
           if (lastUpdatedDate === yesterdayDateFromUserCurrentDate) {
             return;
           }
@@ -30,9 +31,11 @@ export const sendStreakVerification = async (userId: string, userCurrentDate: st
 
           if (habitSnapshot.exists) {
             const habitData = habitSnapshot.data() as Habit;
+            console.log("habitData", habitData.id);
+            console.log("habitData", habitData.frequencyOption);
             if (habitData) {
               if (habitData.frequencyOption === Frequency.Daily) {
-                await db.collection("streaks").doc(streakData.id).update({ currentStreak: 0 });
+                await db.collection("streak").doc(streakData.id).update({ count: 0 });
               } else {
                 const yesterday = moment(yesterdayDateFromUserCurrentDate).format("DDDD");
                 // check if yesterday is part of the selected days to do the habit and if the last updated date is not yesterday
@@ -40,7 +43,7 @@ export const sendStreakVerification = async (userId: string, userCurrentDate: st
                   habitData.selectedDays.includes(yesterday) &&
                   lastUpdatedDate !== yesterdayDateFromUserCurrentDate
                 ) {
-                  await db.collection("streaks").doc(streakData.id).update({ currentStreak: 0 });
+                  await db.collection("streak").doc(streakData.id).update({ count: 0 });
                 }
               }
             }

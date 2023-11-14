@@ -28,6 +28,9 @@ const sendStreakVerification = (userId, userCurrentDate) => __awaiter(void 0, vo
                         .subtract(1, "days")
                         .format("YYYY-MM-DD");
                     const todayDateFromUserCurrentDate = (0, moment_1.default)(userCurrentDate).format("YYYY-MM-DD");
+                    console.log("lastUpdatedDate", lastUpdatedDate);
+                    console.log("yesterdayDateFromUserCurrentDate", lastUpdatedDate);
+                    console.log("todayDateFromUserCurrentDate", lastUpdatedDate);
                     if (lastUpdatedDate === yesterdayDateFromUserCurrentDate) {
                         return;
                     }
@@ -39,16 +42,18 @@ const sendStreakVerification = (userId, userCurrentDate) => __awaiter(void 0, vo
                     const habitSnapshot = yield habitRef.get();
                     if (habitSnapshot.exists) {
                         const habitData = habitSnapshot.data();
+                        console.log("habitData", habitData.id);
+                        console.log("habitData", habitData.frequencyOption);
                         if (habitData) {
                             if (habitData.frequencyOption === types_1.Frequency.Daily) {
-                                yield config_1.db.collection("streaks").doc(streakData.id).update({ currentStreak: 0 });
+                                yield config_1.db.collection("streak").doc(streakData.id).update({ count: 0 });
                             }
                             else {
                                 const yesterday = (0, moment_1.default)(yesterdayDateFromUserCurrentDate).format("DDDD");
                                 // check if yesterday is part of the selected days to do the habit and if the last updated date is not yesterday
                                 if (habitData.selectedDays.includes(yesterday) &&
                                     lastUpdatedDate !== yesterdayDateFromUserCurrentDate) {
-                                    yield config_1.db.collection("streaks").doc(streakData.id).update({ currentStreak: 0 });
+                                    yield config_1.db.collection("streak").doc(streakData.id).update({ count: 0 });
                                 }
                             }
                         }
