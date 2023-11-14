@@ -13,43 +13,50 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.habitNotification = void 0;
-const node_cron_1 = __importDefault(require("node-cron"));
 const services_1 = require("../services");
 const config_1 = require("../config");
 const moment_1 = __importDefault(require("moment"));
 const momentTz = require("moment-timezone");
 const habitNotification = () => __awaiter(void 0, void 0, void 0, function* () {
-    // cron.schedule("*/5 * * * * *", async () => {
     console.log("habitNotification - Running a task every minute");
-    node_cron_1.default.schedule("* * * * * ", () => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            // Inefficient solution
-            const remindersQuerySnapshot = yield config_1.db.collection("reminders").get();
-            if (!remindersQuerySnapshot.empty) {
-                remindersQuerySnapshot.forEach((doc) => __awaiter(void 0, void 0, void 0, function* () {
-                    const reminderData = doc.data();
-                    const currentReminderTime = (0, moment_1.default)(reminderData.reminder).format("HH:mm");
-                    const userId = reminderData.userId;
-                    const userQuerySnapshot = yield config_1.db.collection("users").where("id", "==", userId).get();
-                    if (!userQuerySnapshot.empty) {
-                        const userData = userQuerySnapshot.docs[0].data();
+    try {
+        // Inefficient solution
+        const userQuerySnapshot = yield config_1.db.collection("users").get();
+        if (!userQuerySnapshot.empty) {
+            userQuerySnapshot.forEach((doc) => __awaiter(void 0, void 0, void 0, function* () {
+                if (doc.exists) {
+                    const userData = doc.data();
+                    if (userData.timezone) {
                         const userTimezone = userData.timezone;
                         const userCurrentDateTime = momentTz().tz(userTimezone);
                         const formattedDateTime = (0, moment_1.default)(userCurrentDateTime).format("HH:mm");
-                        const pushToken = userData.pushToken;
-                        if (pushToken && formattedDateTime === currentReminderTime) {
-                            (0, services_1.sendHabitNotification)(pushToken, reminderData.habitId);
+                        const remindersQuerySnapshot = yield config_1.db
+                            .collection("reminders")
+                            .where("userId", "==", userData.id)
+                            .get();
+                        if (!remindersQuerySnapshot.empty) {
+                            remindersQuerySnapshot.forEach((doc) => __awaiter(void 0, void 0, void 0, function* () {
+                                const reminderData = doc.data();
+                                const currentReminderTime = (0, moment_1.default)(reminderData.reminder).format("HH:mm");
+                                const pushToken = userData.pushToken;
+                                if (pushToken && formattedDateTime === currentReminderTime) {
+                                    (0, services_1.sendHabitNotification)(pushToken, reminderData.habitId);
+                                }
+                            }));
+                        }
+                        else {
+                            console.log("querySnapshot is empty");
                         }
                     }
-                }));
-            }
-            else {
-                console.log("querySnapshot is empty");
-            }
+                }
+                else {
+                    console.log("User does not have timezone!");
+                }
+            }));
         }
-        catch (error) {
-            console.error("Error executing cron job:", error);
-        }
-    }));
+    }
+    catch (error) {
+        console.error("Error executing cron job:", error);
+    }
 });
 exports.habitNotification = habitNotification;
