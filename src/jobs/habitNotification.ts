@@ -6,6 +6,7 @@ const momentTz = require("moment-timezone");
 
 export const habitNotification = async () => {
   console.log("habitNotification - Running a task every minute");
+  // Add redis to store the last time the cron job was run and only run if it has been more than 1 minute
   try {
     // Inefficient solution
     const userQuerySnapshot = await db.collection("users").get();
