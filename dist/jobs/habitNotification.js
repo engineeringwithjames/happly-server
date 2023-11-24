@@ -19,6 +19,7 @@ const moment_1 = __importDefault(require("moment"));
 const momentTz = require("moment-timezone");
 const habitNotification = () => __awaiter(void 0, void 0, void 0, function* () {
     console.log("habitNotification - Running a task every minute");
+    // Add redis to store the last time the cron job was run and only run if it has been more than 1 minute
     try {
         // Inefficient solution
         const userQuerySnapshot = yield config_1.db.collection("users").get();

@@ -35,7 +35,7 @@ app.post("/streakEndingReminder", (req: Request, res: Response) => {
 });
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World - Version 21 New!");
+  res.send("Hello World - Version 22 New!");
 });
 
 // Start the server

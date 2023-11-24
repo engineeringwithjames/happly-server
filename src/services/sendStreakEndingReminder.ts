@@ -5,6 +5,7 @@ import { sendPushNotification } from "../utils/sendPushNotification";
 
 export const sendStreakEndingReminder = async (user: User, userCurrentDate: string) => {
   try {
+    let alreadySentNotification = false;
     const habitQuerySnapshot = await db
       .collection("habits")
       .where("userId", "==", user.id)
@@ -31,13 +32,17 @@ export const sendStreakEndingReminder = async (user: User, userCurrentDate: stri
                   const lastUpdatedDate = moment(streakData.lastUpdated).format("YYYY-MM-DD");
                   const todayDateFromUserCurrentDate = moment(userCurrentDate).format("YYYY-MM-DD");
 
-                  if (lastUpdatedDate !== todayDateFromUserCurrentDate) {
+                  if (
+                    alreadySentNotification === false &&
+                    lastUpdatedDate !== todayDateFromUserCurrentDate
+                  ) {
                     // Send a push notification
                     const pushToken = user.pushToken;
                     const title = "Streak Ending Soon 😫";
                     const message = "You have some uncompleted habits!";
 
                     sendPushNotification(pushToken, title, message, { habitId });
+                    alreadySentNotification = true;
                     return;
                   }
                 }

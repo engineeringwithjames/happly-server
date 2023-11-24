@@ -18,6 +18,7 @@ const config_1 = require("../config");
 const sendPushNotification_1 = require("../utils/sendPushNotification");
 const sendStreakEndingReminder = (user, userCurrentDate) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        let alreadySentNotification = false;
         const habitQuerySnapshot = yield config_1.db
             .collection("habits")
             .where("userId", "==", user.id)
@@ -40,12 +41,14 @@ const sendStreakEndingReminder = (user, userCurrentDate) => __awaiter(void 0, vo
                                 if (streakData) {
                                     const lastUpdatedDate = (0, moment_1.default)(streakData.lastUpdated).format("YYYY-MM-DD");
                                     const todayDateFromUserCurrentDate = (0, moment_1.default)(userCurrentDate).format("YYYY-MM-DD");
-                                    if (lastUpdatedDate !== todayDateFromUserCurrentDate) {
+                                    if (alreadySentNotification === false &&
+                                        lastUpdatedDate !== todayDateFromUserCurrentDate) {
                                         // Send a push notification
                                         const pushToken = user.pushToken;
                                         const title = "Streak Ending Soon 😫";
                                         const message = "You have some uncompleted habits!";
                                         (0, sendPushNotification_1.sendPushNotification)(pushToken, title, message, { habitId });
+                                        alreadySentNotification = true;
                                         return;
                                     }
                                 }
